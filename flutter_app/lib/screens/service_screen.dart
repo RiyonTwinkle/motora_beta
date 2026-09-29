@@ -38,55 +38,55 @@ class _ServiceScreenState extends State<ServiceScreen> with SingleTickerProvider
   final List<Map<String, dynamic>> _recommendedServices = [
     {
       'id': 'oil',
-      'title': 'Synthetic Oil & Filter Service',
-      'subtitle': '5W-40 Synthetic with OEM certified filter replacement',
+      'title': 'Synthetic Oil & Filter',
+      'subtitle': '5W-40 Synthetic • OEM Filter',
       'badge': 'Scheduled',
       'badgeColor': AppColors.primary,
-      'duration': '~45m',
+      'duration': '45m',
       'cost': 2850.0,
       'icon': Icons.oil_barrel_rounded,
       'minutes': 45,
     },
     {
       'id': 'brakes',
-      'title': 'Brake Pads & Rotor Calibration',
-      'subtitle': 'Sensor threshold warning • Ceramic friction pads check',
+      'title': 'Brake Pads & Calibration',
+      'subtitle': 'Ceramic Friction • Sensor Check',
       'badge': 'Due Soon',
       'badgeColor': AppColors.error,
-      'duration': '~60m',
+      'duration': '60m',
       'cost': 1850.0,
       'icon': Icons.disc_full_rounded,
       'minutes': 60,
     },
     {
       'id': 'alignment',
-      'title': '3D Wheel Alignment & Balancing',
-      'subtitle': 'Laser camber, toe alignment & high-speed dynamic balancing',
+      'title': '3D Alignment & Balancing',
+      'subtitle': 'Laser Camber • Dynamic Balance',
       'badge': 'Routine',
       'badgeColor': AppColors.secondary,
-      'duration': '~30m',
+      'duration': '30m',
       'cost': 950.0,
       'icon': Icons.tire_repair_rounded,
       'minutes': 30,
     },
     {
       'id': 'filter',
-      'title': 'Cabin Air Microfilter & AC Disinfection',
-      'subtitle': 'Activated carbon PM2.5 filter with ultrasonic antibacterial ozone',
+      'title': 'Cabin Air Microfilter',
+      'subtitle': 'PM2.5 Activated Carbon • AC Ozone',
       'badge': 'Routine',
       'badgeColor': AppColors.secondary,
-      'duration': '~20m',
+      'duration': '20m',
       'cost': 750.0,
       'icon': Icons.air_rounded,
       'minutes': 20,
     },
     {
       'id': 'diag',
-      'title': 'Comprehensive 52-Point OBD Diagnostic',
-      'subtitle': 'Complete drivetrain, battery health & electronic ECU scan',
-      'badge': 'Care+ Included',
+      'title': '52-Point OBD Scan',
+      'subtitle': 'Full ECU & Drivetrain Diagnostic',
+      'badge': 'Care+',
       'badgeColor': AppColors.primaryContainer,
-      'duration': '~45m',
+      'duration': '45m',
       'cost': 1200.0,
       'icon': Icons.troubleshoot_rounded,
       'minutes': 45,
@@ -96,64 +96,64 @@ class _ServiceScreenState extends State<ServiceScreen> with SingleTickerProvider
   // Authorized OEM & Certified Service Stations
   final List<Map<String, dynamic>> _serviceCenters = [
     {
-      'name': 'Pothens Mahindra Authorized Hub',
+      'name': 'Pothens Mahindra Hub',
       'brand': 'Mahindra',
       'distance': '1.4 km',
-      'location': 'Thondayad Bypass, Kozhikode 673014',
+      'location': 'Thondayad, Kozhikode',
       'rating': 4.9,
       'reviews': 428,
       'bays': 6,
       'phone': '+91 495 243 8900',
       'isOpen': true,
-      'features': 'OEM Parts • 24/7 Roadside • Express Bay',
+      'features': 'OEM Parts • 24/7 Roadside',
     },
     {
-      'name': 'ITL Motors Mahindra Service Station',
+      'name': 'ITL Motors Mahindra Station',
       'brand': 'Mahindra',
       'distance': '2.9 km',
-      'location': 'Mini Bypass, Govindapuram, Kozhikode',
+      'location': 'Mini Bypass, Kozhikode',
       'rating': 4.8,
       'reviews': 312,
       'bays': 4,
       'phone': '+91 495 274 1122',
       'isOpen': true,
-      'features': 'Certified Master Techs • Quick Lube Bay',
+      'features': 'Master Techs • Quick Lube',
     },
     {
-      'name': 'Malayalam Tata Motors & EV Care Hub',
+      'name': 'Malayalam Tata & EV Hub',
       'brand': 'Tata',
       'distance': '1.8 km',
-      'location': 'Arayidathupalam, Kozhikode 673016',
+      'location': 'Arayidathupalam, Kozhikode',
       'rating': 4.9,
       'reviews': 512,
       'bays': 8,
       'phone': '+91 495 890 1234',
       'isOpen': true,
-      'features': '60kW EV Fast Charger • High-Voltage Bay',
+      'features': '60kW EV Fast Charger',
     },
     {
-      'name': 'Marina Motors Tata Authorized Workshop',
+      'name': 'Marina Motors Tata Workshop',
       'brand': 'Tata',
       'distance': '3.4 km',
-      'location': 'Eranhipalam, Kozhikode 673006',
+      'location': 'Eranhipalam, Kozhikode',
       'rating': 4.7,
       'reviews': 280,
       'bays': 5,
       'phone': '+91 495 276 4400',
       'isOpen': true,
-      'features': 'Express Routine Maintenance • Body Shop',
+      'features': 'Express Bay • Body Shop',
     },
     {
-      'name': 'MOTORO Multi-Brand Tech Hub',
+      'name': 'MOTORO Multi-Brand Hub',
       'brand': 'All',
       'distance': '5.2 km',
-      'location': 'Cyberpark Industrial Area, Palazhi, Kerala',
+      'location': 'Palazhi, Kerala',
       'rating': 4.9,
       'reviews': 650,
       'bays': 8,
       'phone': '+91 495 332 9900',
       'isOpen': true,
-      'features': 'All Indian Fleets • EV Battery Diagnostic',
+      'features': 'All Fleets • EV Scan',
     },
   ];
 
@@ -161,11 +161,11 @@ class _ServiceScreenState extends State<ServiceScreen> with SingleTickerProvider
   final List<Map<String, dynamic>> _serviceHistory = [
     {
       'date': 'OCT 15, 2025',
-      'badge': 'Certified Hub',
+      'badge': 'Certified',
       'badgeColor': AppColors.success,
       'odometer': '10,240 km',
-      'title': '10,000 km Scheduled Factory Inspection',
-      'subtitle': 'Pothens Mahindra Hub • Kozhikode',
+      'title': '10,000 km Inspection',
+      'subtitle': 'Pothens Mahindra Hub',
       'code': 'SRV-88219',
       'details': '52/52 Safety Points Passed',
       'cost': '₹4,850',
@@ -175,10 +175,10 @@ class _ServiceScreenState extends State<ServiceScreen> with SingleTickerProvider
       'badge': 'Alignment',
       'badgeColor': AppColors.primary,
       'odometer': '7,890 km',
-      'title': 'Wheel Alignment & Dynamic Balancing',
-      'subtitle': 'MOTORO Downtown Hub • Worli Bay',
+      'title': 'Wheel Alignment & Balance',
+      'subtitle': 'MOTORO Downtown Hub',
       'code': 'SRV-77142',
-      'details': 'Laser tolerances <0.02° calibrated',
+      'details': 'Laser Calibrated <0.02°',
       'cost': '₹1,200',
     },
     {
@@ -186,10 +186,10 @@ class _ServiceScreenState extends State<ServiceScreen> with SingleTickerProvider
       'badge': 'Delivery',
       'badgeColor': AppColors.secondary,
       'odometer': '25 km',
-      'title': 'Factory Handover & Delivery Inspection',
-      'subtitle': 'Pre-Delivery Inspection Certified',
+      'title': 'Factory Handover & PDI',
+      'subtitle': 'Pre-Delivery Certified',
       'code': 'SRV-60012',
-      'details': 'PDI Approved by Master Tech #4912',
+      'details': 'PDI Master Tech Approved',
       'cost': '₹0 (Warranty)',
     },
   ];
@@ -649,11 +649,6 @@ class _ServiceScreenState extends State<ServiceScreen> with SingleTickerProvider
                         ),
                       ],
                     ),
-                    const SizedBox(height: 3),
-                    Text(
-                      'All powertrain sensors online • Next factory milestone at ${(vehicle.odometerKm + 2550)} km',
-                      style: AppTypography.bodySmall(fontSize: 11.5),
-                    ),
                   ],
                 ),
               ),
@@ -670,11 +665,11 @@ class _ServiceScreenState extends State<ServiceScreen> with SingleTickerProvider
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildMetricCol('ODOMETER', '${vehicle.odometerKm}', 'km', AppColors.onSurface),
+                _buildMetricCol(Icons.speed_rounded, 'ODOMETER', '${vehicle.odometerKm}', 'km', AppColors.onSurface),
                 Container(width: 1, height: 28, color: AppColors.outlineVariant.withValues(alpha: 0.5)),
-                _buildMetricCol('FUEL LEVEL', '${vehicle.fuelLevelPercent.toInt()}%', '(${vehicle.fuelCapacityLitres.toInt()} L)', AppColors.primary),
+                _buildMetricCol(Icons.local_gas_station_rounded, 'FUEL', '${vehicle.fuelLevelPercent.toInt()}%', '(${vehicle.fuelCapacityLitres.toInt()}L)', AppColors.primary),
                 Container(width: 1, height: 28, color: AppColors.outlineVariant.withValues(alpha: 0.5)),
-                _buildMetricCol('SERVICE DUE', 'In 480', 'km', AppColors.error),
+                _buildMetricCol(Icons.build_circle_rounded, 'DUE IN', '480', 'km', AppColors.error),
               ],
             ),
           ),
@@ -683,32 +678,41 @@ class _ServiceScreenState extends State<ServiceScreen> with SingleTickerProvider
     );
   }
 
-  Widget _buildMetricCol(String label, String value, String unit, Color valColor) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+
+
+  Widget _buildMetricCol(IconData icon, String label, String value, String unit, Color valColor) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          label,
-          style: AppTypography.tag(color: AppColors.onSurfaceVariant),
-        ),
-        const SizedBox(height: 2),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.baseline,
-          textBaseline: TextBaseline.alphabetic,
+        Icon(icon, size: 18, color: valColor.withValues(alpha: 0.8)),
+        const SizedBox(width: 8),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              value,
-              style: AppTypography.stat(
-                fontSize: 16,
-                fontWeight: FontWeight.w800,
-                color: valColor,
-              ),
+              label,
+              style: AppTypography.tag(color: AppColors.onSurfaceVariant),
             ),
-            const SizedBox(width: 3),
-            Text(
-              unit,
-              style: AppTypography.bodySmall(fontSize: 11, color: AppColors.outline),
+            const SizedBox(height: 2),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  value,
+                  style: AppTypography.stat(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                    color: valColor,
+                  ),
+                ),
+                const SizedBox(width: 3),
+                Text(
+                  unit,
+                  style: AppTypography.bodySmall(fontSize: 10.5, color: AppColors.outline),
+                ),
+              ],
             ),
           ],
         ),
@@ -729,12 +733,7 @@ class _ServiceScreenState extends State<ServiceScreen> with SingleTickerProvider
               Text(
                 'Service & Maintenance',
                 style: AppTypography.display(fontSize: 22, letterSpacing: -0.6),
-              ),
-              const SizedBox(height: 3),
-              Text(
-                'Schedule authorized bay visits with OEM genuine parts guarantee.',
-                style: AppTypography.body(fontSize: 12.5),
-              ),
+              )
             ],
           ),
         ),
@@ -744,22 +743,15 @@ class _ServiceScreenState extends State<ServiceScreen> with SingleTickerProvider
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             elevation: 4,
             shadowColor: AppColors.primary.withValues(alpha: 0.35),
           ),
           icon: const Icon(Icons.calendar_month_rounded, size: 18),
-          label: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Book Service',
-                style: AppTypography.subheading(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),
-              ),
-              const SizedBox(width: 4),
-              const Icon(Icons.arrow_forward_rounded, size: 14),
-            ],
+          label: Text(
+            'Book Service',
+            style: AppTypography.subheading(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
       ],
@@ -837,12 +829,7 @@ class _ServiceScreenState extends State<ServiceScreen> with SingleTickerProvider
                                 ),
                               ),
                             ],
-                          ),
-                          Text(
-                            'Live telemetry radius • Kozhikode Region',
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTypography.bodySmall(fontSize: 11),
-                          ),
+                          )
                         ],
                       ),
                     ),
@@ -1068,13 +1055,6 @@ class _ServiceScreenState extends State<ServiceScreen> with SingleTickerProvider
                 overflow: TextOverflow.ellipsis,
                 style: AppTypography.heading(fontSize: 13.5, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 2),
-              Text(
-                center['location'] as String,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppTypography.bodySmall(fontSize: 10.5),
-              ),
             ],
           ),
           Row(
@@ -1278,11 +1258,6 @@ class _ServiceScreenState extends State<ServiceScreen> with SingleTickerProvider
                         ),
                       ],
                     ),
-                    const SizedBox(height: 3),
-                    Text(
-                      s['subtitle'] as String,
-                      style: AppTypography.bodySmall(fontSize: 11),
-                    ),
                   ],
                 ),
               ),
@@ -1463,11 +1438,6 @@ class _ServiceScreenState extends State<ServiceScreen> with SingleTickerProvider
                       rec['title'] as String,
                       style: AppTypography.subheading(fontSize: 13, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      rec['subtitle'] as String,
-                      style: AppTypography.bodySmall(fontSize: 11),
-                    ),
                     const SizedBox(height: 10),
                     Container(
                       padding: const EdgeInsets.only(top: 8),
@@ -1477,27 +1447,20 @@ class _ServiceScreenState extends State<ServiceScreen> with SingleTickerProvider
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                            child: Row(
-                              children: [
-                                const Icon(Icons.verified_rounded, size: 14, color: AppColors.success),
-                                const SizedBox(width: 4),
-                                Expanded(
-                                  child: Text(
-                                    rec['details'] as String,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: AppTypography.label(
-                                      fontSize: 10.5,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.success,
-                                    ),
-                                  ),
+                          Row(
+                            children: [
+                              const Icon(Icons.verified_rounded, size: 14, color: AppColors.success),
+                              const SizedBox(width: 4),
+                              Text(
+                                'Verified',
+                                style: AppTypography.label(
+                                  fontSize: 10.5,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.success,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(width: 8),
                           Text(
                             rec['code'] as String,
                             style: AppTypography.mono(fontSize: 10.5, color: AppColors.primary),

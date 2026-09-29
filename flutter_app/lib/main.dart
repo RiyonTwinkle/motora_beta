@@ -10,6 +10,7 @@ import 'screens/otp_verify_screen.dart';
 import 'screens/payment_gateway_screen.dart';
 import 'screens/qr_contact_screen.dart';
 import 'screens/service_screen.dart';
+import 'screens/telemetry_screen.dart';
 
 void main() {
   runApp(const MotoroApp());
@@ -30,6 +31,7 @@ class MotoroApp extends StatelessWidget {
         '/otp_verify': (context) => const OtpVerifyScreen(phoneNumber: '+91 9876543210'),
         '/home': (context) => const HomeScreen(),
         '/garage': (context) => const GarageScreen(),
+        '/telemetry': (context) => const TelemetryScreen(),
         '/fuel_odo': (context) => const FuelOdoScreen(),
         '/service': (context) => const ServiceScreen(),
         '/fasttag': (context) => const FastTagScreen(),

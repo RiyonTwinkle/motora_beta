@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+        name="viewport" />
+    <meta name="theme-color" content="#006a68" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>MOTORO - Telemetry</title>
+
+    <!-- Tailwind CSS with Forms & Container Queries -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#006a68",
+                        "primary-dark": "#004d4b",
+                        "primary-container": "#2bb5b2",
+                        "primary-fixed": "#7bf6f2",
+                        "primary-fixed-dim": "#5bd9d6",
+                        "accent-electric": "#0df2c9",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#004140",
+
+                        secondary: "#4d6262",
+                        "secondary-container": "#d0e7e6",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#243434",
+
+                        tertiary: "#006a67",
+                        "tertiary-container": "#4eb2af",
+                        "on-tertiary": "#ffffff",
+
+                        background: "#f4fafa",
+                        "on-background": "#121919",
+                        surface: "#f4fafa",
+                        "surface-dim": "#d0dada",
+                        "surface-bright": "#f4fafa",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#eff6f6",
+                        "surface-container": "#e8f1f1",
+                        "surface-container-high": "#e1ebeb",
+                        "surface-container-highest": "#d8e4e4",
+                        "on-surface": "#121919",
+                        "on-surface-variant": "#3a4948",
+                        outline: "#697a79",
+                        "outline-variant": "#bac8c7",
+
+                        error: "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+
+                        warning: "#b05700",
+                        "warning-container": "#ffdcbb",
+
+                        success: "#006c4c",
+                        "success-container": "#89f8c7",
+                    },
+                    borderRadius: {
+                        'xl': "1rem",
+                        '2xl': "1.35rem",
+                        '3xl': "1.75rem",
+                        '4xl': "2.25rem",
+                        full: "9999px"
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+                        headline: ["Outfit", "Inter", "sans-serif"],
+                        mono: ["JetBrains Mono", "SF Mono", "Consolas", "monospace"],
+                    },
+                    boxShadow: {
+                        'glass': '0 16px 36px -8px rgba(0, 106, 104, 0.08), 0 2px 8px rgba(0, 0, 0, 0.03)',
+                        'glass-hover': '0 20px 40px -10px rgba(0, 106, 104, 0.16), 0 4px 12px rgba(0, 0, 0, 0.04)',
+                        'glow-teal': '0 0 24px rgba(43, 181, 178, 0.4)',
+                        'glow-pill': '0 4px 18px rgba(0, 106, 104, 0.35)',
+                        'modal': '0 28px 64px -16px rgba(10, 30, 30, 0.35)',
+                    }
+                }
+            }
+        };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.012em;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .font-headline {
+            font-family: 'Outfit', 'Inter', sans-serif;
+            letter-spacing: -0.022em;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background text-on-background min-h-screen pb-24 antialiased selection:bg-primary-container selection:text-on-primary-container">
+
+    <!-- MASTER TOP APP BAR -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-3">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div
+                    class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white shadow-md shadow-primary/20 group-hover:scale-105 transition-transform">
+                    <span class="material-symbols-outlined text-xl">speed</span>
+                </div>
+                <span class="font-headline font-extrabold text-xl text-on-surface tracking-tight">MOTORO</span>
+            </a>
+
+            <div class="flex items-center gap-3">
+                <!-- Vehicle Selector Dropdown -->
+                <select id="vehicle-select" onchange="switchVehicle(this.value)"
+                    class="bg-surface-container border border-outline-variant/60 rounded-xl px-3 py-1.5 text-xs font-semibold text-on-surface focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                    <option value="IND-MH12-XUV700" selected>Mahindra XUV700</option>
+                    <option value="IND-DL08-THAR-4X4">Mahindra Thar 4x4</option>
+                </select>
+
+                <a href="account.html"
+                    class="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center border border-primary/20 hover:bg-primary hover:text-white transition-colors">
+                    VS
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- UNIFIED FLOATING NAVIGATION DOCK (FIXED AT TOP) -->
+    <nav class="fixed top-16 left-1/2 -translate-x-1/2 z-50 w-full max-w-[420px] px-4 pt-1">
+        <div
+            class="bg-white/95 backdrop-blur-xl border border-white/90 rounded-full shadow-lg shadow-primary/10 p-1.5 flex items-center justify-between">
+            <a href="garage.html" title="Fleet Garage"
+                class="w-11 h-10 rounded-full flex items-center justify-center text-secondary hover:text-primary transition-all">
+                <span class="material-symbols-outlined text-xl">directions_car</span>
+            </a>
+            <a href="service.html" title="Service & Maintenance"
+                class="w-11 h-10 rounded-full flex items-center justify-center text-secondary hover:text-primary transition-all">
+                <span class="material-symbols-outlined text-xl">build</span>
+            </a>
+            <!-- Active Telemetry Tab -->
+            <a href="telemetry.html" title="ECU Telemetry"
+                class="w-11 h-10 rounded-full bg-gradient-to-r from-primary to-primary-container text-white flex items-center justify-center shadow-lg shadow-primary/30 transition-all relative">
+                <span class="material-symbols-outlined text-xl">speed</span>
+                <span
+                    class="absolute bottom-1 w-2.5 h-0.5 bg-accent-electric rounded-full shadow-sm shadow-accent-electric"></span>
+            </a>
+            <a href="fuel_odo.html" title="Fuel & Odometer"
+                class="w-11 h-10 rounded-full flex items-center justify-center text-secondary hover:text-primary transition-all">
+                <span class="material-symbols-outlined text-xl">local_gas_station</span>
+            </a>
+            <a href="fasttag.html" title="FASTag Toll Wallet"
+                class="w-11 h-10 rounded-full flex items-center justify-center text-secondary hover:text-primary transition-all">
+                <span class="material-symbols-outlined text-xl">toll</span>
+            </a>
+            <a href="qr_contact.html" title="Smart Vehicle QR"
+                class="w-11 h-10 rounded-full flex items-center justify-center text-secondary hover:text-primary transition-all">
+                <span class="material-symbols-outlined text-xl">qr_code_scanner</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-4xl mx-auto px-4 pt-16 pb-12">
+
+        <!-- 1. HERO ECU HUD HEADER CARD -->
+        <div
+            class="bg-slate-950 text-white rounded-3xl p-5 border border-accent-electric/30 shadow-2xl relative overflow-hidden">
+            <div
+                class="absolute top-0 right-0 w-64 h-64 bg-accent-electric/5 rounded-full blur-3xl pointer-events-none">
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span
+                            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-accent-electric/15 border border-accent-electric/50 text-accent-electric text-[10px] font-bold tracking-wide">
+                            <span class="w-2 h-2 rounded-full bg-accent-electric animate-pulse"></span>
+                            LIVE
+                        </span>
+                        <span class="px-2.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">
+                            OK
+                        </span>
+                    </div>
+                    <h1 id="vehicle-title" class="text-2xl font-black font-headline tracking-tight text-white">Mahindra
+                        XUV700</h1>
+                    <p id="engine-subtitle" class="text-xs text-slate-400 font-medium mt-0.5">2.2L Diesel</p>
+                </div>
+
+                <!-- Controls: Live Streaming Toggle & Refresh -->
+                <div class="flex items-center gap-3">
+                    <label
+                        class="flex items-center gap-2 text-xs font-semibold text-slate-300 cursor-pointer select-none">
+                        <span>Live</span>
+                        <input type="checkbox" id="stream-toggle" checked onchange="toggleLiveStream(this.checked)"
+                            class="w-4 h-4 text-accent-electric rounded focus:ring-accent-electric bg-slate-800 border-slate-700">
+                    </label>
+                    <button onclick="fetchEcuTelemetry()"
+                        class="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 transition-colors"
+                        title="Sync ECU">
+                        <span class="material-symbols-outlined text-lg">refresh</span>
+                    </button>
+                </div>
+            </div>
+
+            <hr class="border-slate-800 my-4" />
+
+            <!-- Key ECU Telemetry Quick Stats Bar -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                <div class="bg-slate-900/80 p-3 rounded-2xl border border-slate-800">
+                    <span class="material-symbols-outlined text-accent-electric text-lg">memory</span>
+                    <div id="stat-protocol" class="text-xs font-bold text-white mt-1">OBD</div>
+                    <div class="text-[10px] text-slate-400">Protocol</div>
+                </div>
+                <div class="bg-slate-900/80 p-3 rounded-2xl border border-slate-800">
+                    <span class="material-symbols-outlined text-accent-electric text-lg">electric_bolt</span>
+                    <div id="stat-voltage" class="text-xs font-bold text-white mt-1 tabular-nums">13.8V</div>
+                    <div class="text-[10px] text-slate-400">Battery</div>
+                </div>
+                <div class="bg-slate-900/80 p-3 rounded-2xl border border-slate-800">
+                    <span class="material-symbols-outlined text-accent-electric text-lg">oil_barrel</span>
+                    <div id="stat-oil" class="text-xs font-bold text-white mt-1 tabular-nums">4.3 Bar</div>
+                    <div class="text-[10px] text-slate-400">Oil</div>
+                </div>
+                <div class="bg-slate-900/80 p-3 rounded-2xl border border-slate-800">
+                    <span class="material-symbols-outlined text-accent-electric text-lg">thermostat</span>
+                    <div id="stat-coolant" class="text-xs font-bold text-white mt-1 tabular-nums">90.5°C</div>
+                    <div class="text-[10px] text-slate-400">Coolant</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. CATEGORY TABS -->
+        <div class="flex items-center gap-2 overflow-x-auto py-4 scrollbar-none">
+            <button onclick="switchCategory('overview')" id="tab-overview"
+                class="cat-tab px-4 py-2 rounded-full text-xs font-bold bg-primary text-white shadow-md shadow-primary/20 whitespace-nowrap">
+                Overview
+            </button>
+            <button onclick="switchCategory('engine')" id="tab-engine"
+                class="cat-tab px-4 py-2 rounded-full text-xs font-semibold bg-white text-on-surface border border-outline-variant/60 hover:bg-slate-50 whitespace-nowrap">
+                Engine
+            </button>
+            <button onclick="switchCategory('thermal')" id="tab-thermal"
+                class="cat-tab px-4 py-2 rounded-full text-xs font-semibold bg-white text-on-surface border border-outline-variant/60 hover:bg-slate-50 whitespace-nowrap">
+                Thermal
+            </button>
+            <button onclick="switchCategory('fuel')" id="tab-fuel"
+                class="cat-tab px-4 py-2 rounded-full text-xs font-semibold bg-white text-on-surface border border-outline-variant/60 hover:bg-slate-50 whitespace-nowrap">
+                Fuel
+            </button>
+            <button onclick="switchCategory('ignition')" id="tab-ignition"
+                class="cat-tab px-4 py-2 rounded-full text-xs font-semibold bg-white text-on-surface border border-outline-variant/60 hover:bg-slate-50 whitespace-nowrap">
+                Ignition
+            </button>
+            <button onclick="switchCategory('dtc')" id="tab-dtc"
+                class="cat-tab px-4 py-2 rounded-full text-xs font-semibold bg-white text-on-surface border border-outline-variant/60 hover:bg-slate-50 whitespace-nowrap">
+                Diagnostics
+            </button>
+        </div>
+
+        <!-- 3. TAB CONTENT SECTIONS -->
+
+        <!-- OVERVIEW TAB CONTENT -->
+        <div id="sec-overview" class="tab-sec space-y-4">
+            <!-- TACHOMETER & SPEEDOMETER CLUSTER -->
+            <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-glass">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-extrabold text-secondary tracking-wider uppercase">Gauges</span>
+                    <span id="sync-timestamp"
+                        class="text-[10px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-md">Live</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <!-- RPM Arc Gauge -->
+                    <div
+                        class="flex flex-col items-center justify-center p-4 bg-slate-50 rounded-2xl border border-slate-100 relative">
+                        <svg class="w-48 h-36" viewBox="0 0 200 150">
+                            <!-- Background Track -->
+                            <path d="M 30 130 A 70 70 0 1 1 170 130" fill="none" stroke="#e2e8f0" stroke-width="14"
+                                stroke-linecap="round" />
+                            <!-- Active RPM Arc -->
+                            <path id="rpm-arc-path" d="M 30 130 A 70 70 0 1 1 170 130" fill="none" stroke="#006a68"
+                                stroke-width="14" stroke-dasharray="330" stroke-dashoffset="180" stroke-linecap="round"
+                                class="transition-all duration-300" />
+                        </svg>
+                        <div class="text-center -mt-16">
+                            <div id="val-rpm" class="text-3xl font-black font-headline text-on-surface tabular-nums">
+                                2,340</div>
+                            <div class="text-xs font-bold text-primary">RPM</div>
+                        </div>
+                    </div>
+
+                    <!-- Speed & Boost Readouts -->
+                    <div class="space-y-3">
+                        <div
+                            class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                            <div>
+                                <div class="text-xs font-semibold text-secondary">Speed</div>
+                                <div class="flex items-baseline gap-1">
+                                    <span id="val-speed"
+                                        class="text-2xl font-black font-headline text-on-surface tabular-nums">82.5</span>
+                                    <span class="text-xs font-bold text-primary">km/h</span>
+                                </div>
+                            </div>
+                            <span class="material-symbols-outlined text-primary text-3xl">speed</span>
+                        </div>
+
+                        <div
+                            class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                            <div>
+                                <div class="text-xs font-semibold text-secondary">Boost</div>
+                                <div class="flex items-baseline gap-1">
+                                    <span id="val-boost"
+                                        class="text-2xl font-black font-headline text-on-surface tabular-nums">1.32</span>
+                                    <span class="text-xs font-bold text-primary">Bar</span>
+                                </div>
+                            </div>
+                            <span class="material-symbols-outlined text-accent-electric text-3xl">air</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Load & Throttle Progress Bars -->
+                <div class="mt-6 space-y-3">
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span class="text-secondary">Engine Load</span>
+                            <span id="val-load-lbl" class="text-primary font-bold">41%</span>
+                        </div>
+                        <div class="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                            <div id="val-load-bar" class="h-full bg-primary rounded-full transition-all duration-300"
+                                style="width: 41%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span class="text-secondary">Throttle</span>
+                            <span id="val-throttle-lbl" class="text-teal-600 font-bold">33%</span>
+                        </div>
+                        <div class="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                            <div id="val-throttle-bar"
+                                class="h-full bg-teal-500 rounded-full transition-all duration-300" style="width: 33%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KEY TELEMETRY TILES GRID -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-glass">
+                    <span class="material-symbols-outlined text-emerald-600 text-xl">thermostat</span>
+                    <div id="tile-coolant" class="text-lg font-black font-headline text-on-surface mt-1 tabular-nums">
+                        90.5°C</div>
+                    <div class="text-xs font-bold text-secondary">Coolant</div>
+                    <div class="text-[10px] text-emerald-600 font-medium">OK</div>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-glass">
+                    <span class="material-symbols-outlined text-primary text-xl">compress</span>
+                    <div id="tile-fuel-rail" class="text-lg font-black font-headline text-on-surface mt-1 tabular-nums">
+                        1,380 Bar</div>
+                    <div class="text-xs font-bold text-secondary">Fuel Rail</div>
+                    <div class="text-[10px] text-primary font-medium">OK</div>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-glass">
+                    <span class="material-symbols-outlined text-teal-600 text-xl">waves</span>
+                    <div id="tile-afr" class="text-lg font-black font-headline text-on-surface mt-1 tabular-nums">14.7
+                    </div>
+                    <div class="text-xs font-bold text-secondary">Air-Fuel</div>
+                    <div class="text-[10px] text-teal-600 font-medium">OK</div>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-glass">
+                    <span class="material-symbols-outlined text-emerald-600 text-xl">oil_barrel</span>
+                    <div id="tile-oil-press" class="text-lg font-black font-headline text-on-surface mt-1 tabular-nums">
+                        4.3 Bar</div>
+                    <div class="text-xs font-bold text-secondary">Oil Pressure</div>
+                    <div class="text-[10px] text-emerald-600 font-medium">OK</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ENGINE TAB CONTENT -->
+        <div id="sec-engine" class="tab-sec hidden space-y-3">
+            <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-glass">
+                <h3 class="text-xs font-extrabold text-secondary tracking-wider mb-4 uppercase">Engine</h3>
+                <div class="divide-y divide-slate-100 text-xs">
+                    <div class="py-2.5 flex justify-between items-center"><span
+                            class="font-medium text-slate-600">RPM</span><span id="param-rpm"
+                            class="font-bold text-on-surface tabular-nums">2,340 RPM</span></div>
+                    <div class="py-2.5 flex justify-between items-center"><span
+                            class="font-medium text-slate-600">Speed</span><span id="param-speed"
+                            class="font-bold text-on-surface tabular-nums">82.5 km/h</span></div>
+                    <div class="py-2.5 flex justify-between items-center"><span
+                            class="font-medium text-slate-600">Engine Load</span><span id="param-load"
+                            class="font-bold text-on-surface tabular-nums">41%</span></div>
+                    <div class="py-2.5 flex justify-between items-center"><span
+                            class="font-medium text-slate-600">Throttle</span><span id="param-tps"
+                            class="font-bold text-on-surface tabular-nums">33%</span></div>
+                    <div class="py-2.5 flex justify-between items-center"><span class="font-medium text-slate-600">Air
+                            Flow</span><span id="param-maf" class="font-bold text-on-surface tabular-nums">46.8
+                            g/s</span></div>
+                    <div class="py-2.5 flex justify-between items-center"><span
+                            class="font-medium text-slate-600">Pressure</span><span id="param-map"
+                            class="font-bold text-on-surface tabular-nums">148 kPa</span></div>
+                    <div class="py-2.5 flex justify-between items-center"><span
+                            class="font-medium text-slate-600">Boost</span><span id="param-boost"
+                            class="font-bold text-primary tabular-nums">1.32 Bar</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- THERMAL TAB CONTENT -->
+        <div id="sec-thermal" class="tab-sec hidden space-y-3">
+            <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-glass">
+                <h3 class="text-xs font-extrabold text-secondary tracking-wider mb-4 uppercase">Thermal</h3>
+                <div class="divide-y divide-slate-100 text-xs">
+                    <div class="py-2.5 flex justify-between items-center"><span
+                            class="font-medium text-slate-600">Coolant</span><span id="param-ect"
+                            class="font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md tabular-nums">90.5°C</span>
+                    </div>
+                    <div class="py-2.5 flex justify-between items-center"><span class="font-medium text-slate-600">Oil
+                            Temp</span><span id="param-eot" class="font-bold text-on-surface tabular-nums">94.8°C</span>
+                    </div>
+                    <div class="py-2.5 flex justify-between items-center"><span class="font-medium text-slate-600">Oil
+                            Pressure</span><span id="param-eop"
+                            class="font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md tabular-nums">4.3
+                            Bar</span></div>
+                    <div class="py-2.5 flex justify-between items-center"><span
+                            class="font-medium text-slate-600">Intake Air</span><span id="param-iat"
+                            class="font-bold text-on-surface tabular-nums">27.5°C</span></div>
+                    <div class="py-2.5 flex justify-between items-center"><span
+                            class="font-medium text-slate-600">Transmission</span><span id="param-tft"
+                            class="font-bold text-on-surface tabular-nums">82.0°C</span></div>
+                    <div class="py-2.5 flex justify-between items-center"><span
+                            class="font-medium text-slate-600">Exhaust</span><span id="param-egt"
+                            class="font-bold text-on-surface tabular-nums">495°C</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FUEL TAB CONTENT -->
+        <div id="sec-fuel" class="tab-sec hidden space-y-3">
+            <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-glass">
+                <h3 class="text-xs font-extrabold text-secondary tracking-wider mb-4 uppercase">Fuel</h3>
+                <div class="divide-y divide-slate-100 text-xs">
+                    <div class="py-2.5 flex justify-between items-center"><span class="font-medium text-slate-600">Fuel
+                            Rail</span><span id="param-frp" class="font-bold text-primary tabular-nums">1,380 Bar</span>
+                    </div>
+                    <div class="py-2.5 flex justify-between items-center"><span
+                            class="font-medium text-slate-600">Air-Fuel</span><span id="param-afr"
+                            class="font-bold text-on-surface tabular-nums">14.7</span></div>
+                    <div class="py-2.5 flex justify-between items-center"><span class="font-medium text-slate-600">Short
+                            Trim</span><span id="param-stft" class="font-bold text-on-surface tabular-nums">+0.8%</span>
+                    </div>
+                    <div class="py-2.5 flex justify-between items-center"><span class="font-medium text-slate-600">Long
+                            Trim</span><span id="param-ltft" class="font-bold text-on-surface tabular-nums">-0.4%</span>
+                    </div>
+                    <div class="py-2.5 flex justify-between items-center"><span
+                            class="font-medium text-slate-600">Economy</span><span id="param-ife"
+                            class="font-bold text-primary tabular-nums">16.2 km/L</span></div>
+                    <div class="py-2.5 flex justify-between items-center"><span class="font-medium text-slate-600">Fuel
+                            Level</span><span id="param-fvr" class="font-bold text-on-surface tabular-nums">78%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- IGNITION TAB CONTENT -->
+        <div id="sec-ignition" class="tab-sec hidden space-y-4">
+            <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-glass">
+                <h3 class="text-xs font-extrabold text-secondary tracking-wider mb-4 uppercase">Ignition</h3>
+                <div class="divide-y divide-slate-100 text-xs">
+                    <div class="py-2.5 flex justify-between items-center"><span
+                            class="font-medium text-slate-600">Advance</span><span id="param-ign"
+                            class="font-bold text-on-surface tabular-nums">+14.2°</span></div>
+                    <div class="py-2.5 flex justify-between items-center"><span
+                            class="font-medium text-slate-600">Intake Cam</span><span id="param-vvt-in"
+                            class="font-bold text-on-surface tabular-nums">+11.5°</span></div>
+                    <div class="py-2.5 flex justify-between items-center"><span
+                            class="font-medium text-slate-600">Exhaust Cam</span><span id="param-vvt-ex"
+                            class="font-bold text-on-surface tabular-nums">+7.8°</span></div>
+                </div>
+            </div>
+
+            <!-- Cylinder Status -->
+            <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-glass">
+                <h3 class="text-xs font-extrabold text-secondary tracking-wider mb-4 uppercase">Cylinders</h3>
+                <div class="grid grid-cols-4 gap-3 text-center">
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                        <div class="text-xs font-bold text-slate-500">Cyl 1</div>
+                        <div class="text-2xl font-black text-emerald-600 my-1">0</div>
+                        <div class="text-[10px] font-bold text-emerald-600">OK</div>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                        <div class="text-xs font-bold text-slate-500">Cyl 2</div>
+                        <div class="text-2xl font-black text-emerald-600 my-1">0</div>
+                        <div class="text-[10px] font-bold text-emerald-600">OK</div>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                        <div class="text-xs font-bold text-slate-500">Cyl 3</div>
+                        <div class="text-2xl font-black text-emerald-600 my-1">0</div>
+                        <div class="text-[10px] font-bold text-emerald-600">OK</div>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                        <div class="text-xs font-bold text-slate-500">Cyl 4</div>
+                        <div class="text-2xl font-black text-emerald-600 my-1">0</div>
+                        <div class="text-[10px] font-bold text-emerald-600">OK</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DIAGNOSTICS TAB CONTENT -->
+        <div id="sec-dtc" class="tab-sec hidden space-y-4">
+            <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-glass">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-xs font-extrabold text-secondary tracking-wider uppercase">Diagnostics</h3>
+                    </div>
+                    <button onclick="runDtcScan()"
+                        class="px-4 py-2 rounded-xl bg-primary text-white font-bold text-xs shadow-md hover:bg-primary-dark transition-colors">
+                        Scan
+                    </button>
+                </div>
+
+                <div id="dtc-results"
+                    class="bg-emerald-50 border border-emerald-200/80 rounded-2xl p-4 flex items-center gap-3">
+                    <span class="material-symbols-outlined text-emerald-600 text-3xl">check_circle</span>
+                    <div>
+                        <div class="text-xs font-bold text-emerald-900">No Faults</div>
+                        <div class="text-xs text-emerald-700">All systems normal.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- LIVE TELEMETRY STREAM & NAVIGATION LOGIC SCRIPT -->
+    <script>
+        let liveStreamTimer = null;
+        let isStreaming = true;
+
+        const mockTelemetry = {
+            'IND-MH12-XUV700': {
+                name: 'Mahindra XUV700',
+                engine: '2.2L Diesel',
+                rpm: 2340,
+                speed: 82.5,
+                boost: 1.32,
+                load: 41.2,
+                tps: 32.5,
+                coolant: 90.5,
+                oilPress: 4.3,
+                fuelRail: 1380,
+                afr: 14.7,
+            },
+            'IND-DL08-THAR-4X4': {
+                name: 'Mahindra Thar 4x4',
+                engine: '2.2L Diesel',
+                rpm: 1950,
+                speed: 64.0,
+                boost: 1.45,
+                load: 48.0,
+                tps: 38.0,
+                coolant: 91.2,
+                oilPress: 4.4,
+                fuelRail: 1420,
+                afr: 14.7,
+            }
+        };
+
+        let currentVin = 'IND-MH12-XUV700';
+
+        function switchVehicle(vin) {
+            currentVin = vin;
+            const data = mockTelemetry[vin] || mockTelemetry['IND-MH12-XUV700'];
+            document.getElementById('vehicle-title').textContent = data.name;
+            document.getElementById('engine-subtitle').textContent = data.engine;
+            updateTelemetryUI(data);
+        }
+
+        function updateTelemetryUI(data) {
+            // Update tachometer SVG arc offset (total stroke dash array 330)
+            const percent = Math.min(Math.max(data.rpm / 6800, 0), 1);
+            const offset = 330 - (330 * percent * 0.75);
+            document.getElementById('rpm-arc-path').setAttribute('stroke-dashoffset', offset);
+
+            document.getElementById('val-rpm').textContent = Math.round(data.rpm).toLocaleString();
+            document.getElementById('val-speed').textContent = data.speed.toFixed(1);
+            document.getElementById('val-boost').textContent = data.boost.toFixed(2);
+
+            document.getElementById('val-load-lbl').textContent = Math.round(data.load) + '%';
+            document.getElementById('val-load-bar').style.width = Math.min(data.load, 100) + '%';
+
+            document.getElementById('val-throttle-lbl').textContent = Math.round(data.tps) + '%';
+            document.getElementById('val-throttle-bar').style.width = Math.min(data.tps, 100) + '%';
+
+            document.getElementById('stat-oil').textContent = data.oilPress.toFixed(1) + ' Bar';
+            document.getElementById('stat-coolant').textContent = data.coolant.toFixed(1) + '°C';
+
+            document.getElementById('tile-coolant').textContent = data.coolant.toFixed(1) + '°C';
+            document.getElementById('tile-fuel-rail').textContent = Math.round(data.fuelRail).toLocaleString() + ' Bar';
+            document.getElementById('tile-oil-press').textContent = data.oilPress.toFixed(1) + ' Bar';
+
+            // Sync Detailed Parameters
+            document.getElementById('param-rpm').textContent = Math.round(data.rpm) + ' RPM';
+            document.getElementById('param-speed').textContent = data.speed.toFixed(1) + ' km/h';
+            document.getElementById('param-load').textContent = Math.round(data.load) + '%';
+            document.getElementById('param-tps').textContent = Math.round(data.tps) + '%';
+            document.getElementById('param-boost').textContent = data.boost.toFixed(2) + ' Bar';
+            document.getElementById('param-ect').textContent = data.coolant.toFixed(1) + '°C';
+            document.getElementById('param-eop').textContent = data.oilPress.toFixed(1) + ' Bar';
+            document.getElementById('param-frp').textContent = Math.round(data.fuelRail).toLocaleString() + ' Bar';
+
+            const now = new Date();
+            document.getElementById('sync-timestamp').textContent = 'Live';
+        }
+
+        function toggleLiveStream(enabled) {
+            isStreaming = enabled;
+            if (enabled) {
+                startLiveStream();
+            } else {
+                clearInterval(liveStreamTimer);
+            }
+        }
+
+        function startLiveStream() {
+            clearInterval(liveStreamTimer);
+            liveStreamTimer = setInterval(() => {
+                if (!isStreaming) return;
+                const data = mockTelemetry[currentVin];
+                if (!data) return;
+
+                // Simulate slight realistic fluctuations
+                data.rpm = Math.max(800, Math.min(6500, data.rpm + (Math.random() * 50 - 25)));
+                data.speed = Math.max(0, Math.min(200, data.speed + (Math.random() * 1.0 - 0.5)));
+                data.boost = Math.max(0, Math.min(2.5, data.boost + (Math.random() * 0.04 - 0.02)));
+                data.load = Math.max(10, Math.min(100, data.load + (Math.random() * 1.2 - 0.6)));
+                data.coolant = Math.max(80, Math.min(105, data.coolant + (Math.random() * 0.2 - 0.1)));
+
+                updateTelemetryUI(data);
+            }, 1200);
+        }
+
+        function fetchEcuTelemetry() {
+            const data = mockTelemetry[currentVin];
+            updateTelemetryUI(data);
+        }
+
+        function switchCategory(cat) {
+            document.querySelectorAll('.tab-sec').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.cat-tab').forEach(el => {
+                el.classList.remove('bg-primary', 'text-white', 'shadow-md', 'shadow-primary/20');
+                el.classList.add('bg-white', 'text-on-surface', 'border', 'border-outline-variant/60');
+            });
+
+            document.getElementById('sec-' + cat).classList.remove('hidden');
+            const activeTab = document.getElementById('tab-' + cat);
+            activeTab.classList.remove('bg-white', 'text-on-surface', 'border', 'border-outline-variant/60');
+            activeTab.classList.add('bg-primary', 'text-white', 'shadow-md', 'shadow-primary/20');
+        }
+
+        function runDtcScan() {
+            const results = document.getElementById('dtc-results');
+            results.innerHTML = `
+                <span class="material-symbols-outlined text-primary text-3xl animate-spin">refresh</span>
+                <div>
+                    <div class="text-xs font-bold text-on-surface">Scanning...</div>
+                    <div class="text-xs text-slate-500">Checking codes...</div>
+                </div>
+            `;
+            setTimeout(() => {
+                results.innerHTML = `
+                    <span class="material-symbols-outlined text-emerald-600 text-3xl">check_circle</span>
+                    <div>
+                        <div class="text-xs font-bold text-emerald-900">No Faults</div>
+                        <div class="text-xs text-emerald-700">All systems normal.</div>
+                    </div>
+                `;
+            }, 1200);
+        }
+
+        // Initialize Live Stream on Page Load
+        startLiveStream();
+    </script>
+</body>
+
+</html>

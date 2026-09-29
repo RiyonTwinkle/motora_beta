@@ -361,7 +361,7 @@ class _FastTagScreenState extends State<FastTagScreen> {
   // 2. SECONDARY ICON-ONLY NAVIGATION DOCK (CENTRALIZED ACTIVE SLIDE)
   Widget _buildSecondaryNavDock() {
     return FloatingTopNavBar(
-      currentIndex: 3, // FastTag tab
+      currentIndex: 4, // FastTag tab
       currentVehicle: _vehicle,
     );
   }
@@ -555,13 +555,7 @@ class _FastTagScreenState extends State<FastTagScreen> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(_vehicle?.name ?? 'Mahindra XUV700 AX7 L', style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
-                          const Text('Class 4 LM-V', style: TextStyle(color: Colors.white60, fontSize: 9)),
-                        ],
-                      ),
+                      Text(_vehicle?.name ?? 'Mahindra XUV700 AX7 L', style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
                     ],
                   ),
                   Container(
@@ -672,13 +666,7 @@ class _FastTagScreenState extends State<FastTagScreen> {
                       children: [
                         Icon(Icons.local_police_rounded, color: AppColors.primary, size: 20),
                         SizedBox(width: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Bandra-Worli Sea Link Pass', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.onSurface)),
-                            Text('Unlimited passes valid till 30 Sep (14 days left)', style: TextStyle(fontSize: 9, color: AppColors.secondary)),
-                          ],
-                        ),
+                        Text('Bandra-Worli Sea Link Pass', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.onSurface)),
                       ],
                     ),
                     TextButton(
@@ -726,7 +714,6 @@ class _FastTagScreenState extends State<FastTagScreen> {
           ),
           const SizedBox(height: 4),
           Text(val, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Outfit', color: AppColors.onSurface)),
-          Text(subtitle, style: TextStyle(fontSize: 8, color: color, fontWeight: FontWeight.bold)),
         ],
       ),
     );
@@ -1047,8 +1034,6 @@ class _FastTagScreenState extends State<FastTagScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 2),
-                Text(subtitle, style: const TextStyle(fontSize: 10, color: AppColors.secondary)),
               ],
             ),
             Text('₹${cost.toInt()}', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Outfit', color: AppColors.primary)),
@@ -1078,7 +1063,7 @@ class _FastTagScreenState extends State<FastTagScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Recent Toll Crossings & Pass Activity', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.onSurface)),
-                  Text('Live automated toll plaza deductions synced from IHMCL', style: TextStyle(fontSize: 10, color: AppColors.secondary)),
+                  Text(' ', style: TextStyle(fontSize: 10, color: AppColors.secondary)),
                 ],
               ),
               DropdownButton<String>(

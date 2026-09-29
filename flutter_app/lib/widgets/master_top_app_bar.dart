@@ -96,106 +96,10 @@ class MasterTopAppBar extends StatelessWidget {
               ),
             ),
 
-            // Right: Vehicle Switcher Pill, Profile Avatar & Logout
+            // Right: Profile Avatar & Logout
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Vehicle Switcher Pill
-                if (vehicles.isNotEmpty)
-                  PopupMenuButton<VehicleItem>(
-                    tooltip: 'Switch Vehicle',
-                    initialValue: currentVehicle,
-                    onSelected: onVehicleChanged,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    color: Colors.white,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                      decoration: BoxDecoration(
-                        color: AppColors.surfaceContainer,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: AppColors.outlineVariant.withValues(alpha: 0.6),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 7,
-                            height: 7,
-                            decoration: const BoxDecoration(
-                              color: AppColors.success,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          const SizedBox(width: 5),
-                          ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 105),
-                            child: Text(
-                              currentVehicle?.registrationPlate ?? 'MH 12 RN 2024',
-                              overflow: TextOverflow.ellipsis,
-                              style: AppTypography.mono(
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.onSurface,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 2),
-                          const Icon(
-                            Icons.expand_more_rounded,
-                            size: 15,
-                            color: AppColors.secondary,
-                          ),
-                        ],
-                      ),
-                    ),
-                    itemBuilder: (ctx) => vehicles.map((v) {
-                      final isSel = v.vin == currentVehicle?.vin;
-                      return PopupMenuItem<VehicleItem>(
-                        value: v,
-                        child: Row(
-                          children: [
-                            Icon(
-                              isSel
-                                  ? Icons.radio_button_checked
-                                  : Icons.radio_button_off,
-                              color: isSel ? AppColors.primary : AppColors.outline,
-                              size: 15,
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    v.name,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: AppTypography.subheading(
-                                      fontSize: 12.5,
-                                      fontWeight:
-                                          isSel ? FontWeight.w700 : FontWeight.w500,
-                                    ),
-                                  ),
-                                  Text(
-                                    '${v.registrationPlate} • ${v.fuelType}',
-                                    style: AppTypography.mono(
-                                      fontSize: 10,
-                                      color: AppColors.outline,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                const SizedBox(width: 6),
-
                 // Profile Avatar (VS)
                 InkWell(
                   onTap: () {

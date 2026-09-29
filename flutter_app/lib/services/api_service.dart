@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../models/vehicle.dart';
+import '../models/ecu_telemetry.dart';
 
 class ApiService {
   // Automatically points to 10.0.2.2 for Android emulator, and 127.0.0.1 for Web/Desktop
@@ -395,5 +396,28 @@ class ApiService {
       'preferred_date': preferredDate,
       'confirmation_code': code,
     };
+  }
+
+  // --- ECU Telemetry ---
+
+  static Future<EcuTelemetry> getEcuTelemetry(String vin) async {
+    try {
+      final response = await _client.get(
+        Uri.parse('$baseUrl/api/v1/vehicles/$vin/ecu-telemetry'),
+        headers: {'Accept': 'application/json'},
+      ).timeout(const Duration(seconds: 3));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['status'] == 'success' || data['telemetry'] != null) {
+          final map = data['telemetry'] ?? data;
+          return EcuTelemetry.fromJson(map);
+        }
+      }
+    } catch (_) {}
+
+    final vehicles = await getVehicles();
+    final car = vehicles.firstWhere((v) => v.vin == vin, orElse: () => vehicles.first);
+    return EcuTelemetry.mockForVin(car.vin, name: car.name, fuelType: car.fuelType);
   }
 }

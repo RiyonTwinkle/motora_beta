@@ -230,22 +230,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                 // Tab Header Text
                                 Text(
-                                  _isOtpTab ? 'Login with Mobile OTP' : 'Operator / Fleet Email Login',
+                                  _isOtpTab ? 'Login with Mobile OTP' : 'Email Login',
                                   style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.onSurface,
                                     letterSpacing: -0.3,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  _isOtpTab
-                                      ? 'Enter your registered Indian phone number to receive a 6-digit OTP code.'
-                                      : 'Sign in with your corporate or registered fleet operator credentials.',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.secondary,
                                   ),
                                 ),
                                 const SizedBox(height: 20),
@@ -283,11 +273,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-
-                      const SizedBox(height: 24),
-
-                      // Feature Cards
-                      _buildFeatureCards(),
                     ],
                   ),
                 ),
@@ -331,35 +316,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 letterSpacing: 1.2,
               ),
             ),
-            const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-              decoration: BoxDecoration(
-                color: AppColors.primaryContainer.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.primaryContainer.withValues(alpha: 0.4)),
-              ),
-              child: const Text(
-                'BHARAT',
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.primary,
-                  letterSpacing: 0.8,
-                ),
-              ),
-            ),
           ],
-        ),
-        const SizedBox(height: 8),
-        const Text(
-          'Performance Fleet Care & Driver Logbook',
-          style: TextStyle(
-            fontSize: 13,
-            color: AppColors.secondary,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        )
       ],
     );
   }
@@ -473,7 +431,7 @@ class _LoginScreenState extends State<LoginScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'DRIVER MOBILE NUMBER (INDIA)',
+            'MOBILE NUMBER',
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w800,
@@ -560,54 +518,21 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
           const SizedBox(height: 6),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Text(
-                  'Standard 10-digit mobile number',
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTypography.bodySmall(fontSize: 11, color: AppColors.secondary),
+          Align(
+            alignment: Alignment.centerRight,
+            child: InkWell(
+              onTap: _quickFillDemoPhone,
+              child: Text(
+                'Use Demo: 98765 43210',
+                style: AppTypography.label(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primary,
                 ),
               ),
-              const SizedBox(width: 8),
-              InkWell(
-                onTap: _quickFillDemoPhone,
-                child: Text(
-                  'Use Demo: 98765 43210',
-                  style: AppTypography.label(
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
           const SizedBox(height: 16),
-
-          // Instant Demo Note Callout
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.05),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
-            ),
-            child: const Row(
-              children: [
-                Icon(Icons.info_outline, color: AppColors.primary, size: 18),
-                SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'Clicking Send OTP will take you to the secondary OTP Verification page.',
-                    style: TextStyle(fontSize: 11, color: AppColors.onSurfaceVariant, height: 1.3),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 18),
 
           // Send OTP Submit Button
           SizedBox(
@@ -649,7 +574,7 @@ class _LoginScreenState extends State<LoginScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'OPERATOR / FLEET EMAIL',
+            'EMAIL ADDRESS',
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w800,
@@ -807,69 +732,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildFeatureCards() {
-    return Row(
-      children: [
-        Expanded(
-          child: _buildFeaturePill(
-            icon: Icons.sensors,
-            title: 'CAN Telemetry',
-            subtitle: 'Real-time sync',
-          ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: _buildFeaturePill(
-            icon: Icons.toll,
-            title: 'FASTag NETC',
-            subtitle: 'Auto-toll reload',
-          ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: _buildFeaturePill(
-            icon: Icons.qr_code,
-            title: 'QR Shield',
-            subtitle: 'Emergency tag',
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFeaturePill({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.7),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.8)),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, size: 18, color: AppColors.primary),
-          const SizedBox(height: 4),
-          Text(
-            title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.onSurface),
-          ),
-          Text(
-            subtitle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 9, color: AppColors.secondary),
-          ),
-        ],
-      ),
     );
   }
 

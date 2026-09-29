@@ -5,16 +5,12 @@ import '../models/vehicle.dart';
 import '../theme/app_theme.dart';
 import '../screens/garage_screen.dart';
 import '../screens/service_screen.dart';
+import '../screens/telemetry_screen.dart';
 import '../screens/fuel_odo_screen.dart';
 import '../screens/fasttag_screen.dart';
 import '../screens/qr_contact_screen.dart';
 
 /// Motoro Unified Floating Icon-Only Navigation Dock.
-/// Crafted with UI/UX Pro Max automotive HUD design principles:
-/// - Frosted glassmorphism background with dual-layer depth shadows.
-/// - Icon-only minimalism for distraction-free driver telemetry.
-/// - Centered horizontal placement across all device viewports.
-/// - Fluid animated sliding active pill that seamlessly centers under the active tab.
 class FloatingTopNavBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int>? onTabSelected;
@@ -40,6 +36,11 @@ class FloatingTopNavBar extends StatelessWidget {
       tooltip: 'Service & Maintenance',
       semanticsLabel: 'Services Screen',
       hasAlertBadge: true,
+    ),
+    _NavTabItem(
+      icon: Icons.speed_rounded,
+      tooltip: 'IC Engine ECU Telemetry',
+      semanticsLabel: 'Telemetry Screen',
     ),
     _NavTabItem(
       icon: Icons.local_gas_station_rounded,
@@ -75,12 +76,15 @@ class FloatingTopNavBar extends StatelessWidget {
         destination = ServiceScreen(initialVehicle: currentVehicle);
         break;
       case 2:
-        destination = FuelOdoScreen(initialVehicle: currentVehicle);
+        destination = TelemetryScreen(initialVehicle: currentVehicle);
         break;
       case 3:
-        destination = FastTagScreen(initialVehicle: currentVehicle);
+        destination = FuelOdoScreen(initialVehicle: currentVehicle);
         break;
       case 4:
+        destination = FastTagScreen(initialVehicle: currentVehicle);
+        break;
+      case 5:
         destination = QrContactScreen(initialVehicle: currentVehicle);
         break;
       default:
@@ -107,7 +111,7 @@ class FloatingTopNavBar extends StatelessWidget {
     return Center(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        constraints: const BoxConstraints(maxWidth: 380),
+        constraints: const BoxConstraints(maxWidth: 420),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
           boxShadow: [

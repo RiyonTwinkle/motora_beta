@@ -5,7 +5,6 @@ import '../services/api_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/floating_top_nav_bar.dart';
 import '../widgets/master_top_app_bar.dart';
-import 'service_screen.dart';
 
 class FuelOdoScreen extends StatefulWidget {
   final VehicleItem? initialVehicle;
@@ -287,10 +286,6 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
                           _buildSection3MileageMonitor(),
                           const SizedBox(height: 18),
 
-                          // SECTION 4: APPROXIMATE ENGINE HEALTH INDEX
-                          _buildSection4EngineHealth(),
-                          const SizedBox(height: 18),
-
                           // SECTION 5: VERIFIED DRIVER LOG LEDGER
                           _buildSection5DriverLogLedger(),
                           const SizedBox(height: 24),
@@ -307,7 +302,7 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
   // 2. SECONDARY ICON-ONLY NAVIGATION DOCK (CENTRALIZED ACTIVE SLIDE)
   Widget _buildSecondaryNavDock() {
     return FloatingTopNavBar(
-      currentIndex: 2, // Fuel & Odometer (Central Tab)
+      currentIndex: 3, // Fuel & Odometer Tab
       currentVehicle: _vehicle,
     );
   }
@@ -394,86 +389,11 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
                         const Text('km', style: TextStyle(fontSize: 16, color: AppColors.secondary, fontWeight: FontWeight.w600)),
                       ],
                     ),
-                    const Text(
-                      'AI Dynamic Projection based on throttle profile',
-                      style: TextStyle(fontSize: 10, color: AppColors.secondary),
-                    ),
                   ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          const Divider(height: 1),
-          const SizedBox(height: 12),
-
-          // 3 Macro Telemetry Cards
-          Row(
-            children: [
-              Expanded(
-                child: _buildMacroTelemetryCard(
-                  label: 'CLUSTER ODOMETER',
-                  value: '${_currentOdo.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')} km',
-                  note: '+470 km logged',
-                  noteColor: AppColors.emerald,
-                  icon: Icons.speed_rounded,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: _buildMacroTelemetryCard(
-                  label: 'BLENDED MILEAGE',
-                  value: '14.8 km/L',
-                  note: '₹ 6.54 / km cost',
-                  noteColor: AppColors.primary,
-                  icon: Icons.eco_rounded,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: _buildMacroTelemetryCard(
-                  label: 'APPROX HEALTH',
-                  value: '96% Prime',
-                  note: 'Service in 680 km',
-                  noteColor: Colors.amber.shade800,
-                  icon: Icons.health_and_safety_rounded,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMacroTelemetryCard({
-    required String label,
-    required String value,
-    required String note,
-    required Color noteColor,
-    required IconData icon,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade50,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(label, style: const TextStyle(fontSize: 8, fontWeight: FontWeight.w800, color: AppColors.secondary)),
-              Icon(icon, size: 12, color: AppColors.primary),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Text(value, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'Outfit', color: AppColors.onSurface)),
-          const SizedBox(height: 2),
-          Text(note, style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: noteColor)),
         ],
       ),
     );
@@ -524,24 +444,21 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
                 style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
                 decoration: InputDecoration(
                   labelText: 'Fuel Pumped (Litres)',
+                  prefixIcon: const Icon(Icons.local_gas_station_rounded, size: 20, color: AppColors.primary),
                   suffixText: 'LTR',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
                 ),
               ),
               const SizedBox(height: 8),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildQuickLitreChip('+10 L', () => setState(() => _fuelLitresCtrl.text = '10.0')),
-                    const SizedBox(width: 6),
-                    _buildQuickLitreChip('+20 L', () => setState(() => _fuelLitresCtrl.text = '20.0')),
-                    const SizedBox(width: 6),
-                    _buildQuickLitreChip('+35 L', () => setState(() => _fuelLitresCtrl.text = '35.0')),
-                    const SizedBox(width: 6),
-                    _buildQuickLitreChip('Full Tank', () => setState(() => _fuelLitresCtrl.text = (_tankCapacity - _fuelLitres).clamp(5.0, _tankCapacity).toStringAsFixed(1))),
-                  ],
-                ),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: [
+                  _buildQuickLitreChip('+10 L', () => setState(() => _fuelLitresCtrl.text = '10.0')),
+                  _buildQuickLitreChip('+20 L', () => setState(() => _fuelLitresCtrl.text = '20.0')),
+                  _buildQuickLitreChip('+35 L', () => setState(() => _fuelLitresCtrl.text = '35.0')),
+                  _buildQuickLitreChip('Full Tank', () => setState(() => _fuelLitresCtrl.text = (_tankCapacity - _fuelLitres).clamp(5.0, _tankCapacity).toStringAsFixed(1))),
+                ],
               ),
               const SizedBox(height: 12),
 
@@ -556,7 +473,7 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
                       style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
                       decoration: InputDecoration(
                         labelText: 'Price / Litre',
-                        prefixText: '₹ ',
+                        prefixIcon: const Icon(Icons.currency_rupee_rounded, size: 18, color: AppColors.primary),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
                       ),
                     ),
@@ -591,6 +508,7 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
                 initialValue: _selectedStation,
                 decoration: InputDecoration(
                   labelText: 'Fuel Station / Vendor',
+                  prefixIcon: const Icon(Icons.ev_station_rounded, size: 20, color: AppColors.primary),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
                 ),
                 items: const [
@@ -630,13 +548,7 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Full Tank Calibration', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                      Text('Calculates exact delta km/L between shut-offs', style: TextStyle(fontSize: 10, color: AppColors.secondary)),
-                    ],
-                  ),
+                  const Text('Full Tank Calibration', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                   Switch(
                     value: _isFullTankCalibrated,
                     activeThumbColor: AppColors.primary,
@@ -686,14 +598,6 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
                       SizedBox(width: 8),
                       Text('Manual Odometer & Trip Checkpoint', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.onSurface)),
                     ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: AppColors.emerald.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text('LIVE SYNC', style: TextStyle(fontSize: 9, fontWeight: FontWeight.w800, color: AppColors.emerald)),
                   ),
                 ],
               ),
@@ -773,8 +677,7 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
                 controller: _odoNotesCtrl,
                 style: const TextStyle(fontSize: 12),
                 decoration: InputDecoration(
-                  labelText: 'Trip Notes & Route Details (Optional)',
-                  hintText: 'e.g. Mumbai to Pune Expressway return journey',
+                  hintText: 'Trip Notes & Route Details (Optional)',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
                 ),
               ),
@@ -786,7 +689,7 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
                 child: ElevatedButton.icon(
                   onPressed: _handleOdoSubmit,
                   icon: const Icon(Icons.save_rounded, size: 18),
-                  label: const Text('Commit Odometer Log & Refresh Engine Interval', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                  label: const Text('Submit Odometer Log & Refresh Engine Interval', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,
@@ -867,37 +770,13 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
                   Text('Fuel Efficiency & Mileage Monitor', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.onSurface)),
                 ],
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(color: AppColors.emerald.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
-                child: Row(
-                  children: [
-                    Icon(Icons.stars_rounded, size: 14, color: AppColors.emerald),
-                    const SizedBox(width: 4),
-                    Text('A+ Eco Performer', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AppColors.emerald)),
-                  ],
-                ),
-              ),
             ],
           ),
           const SizedBox(height: 14),
 
-          // 4 Metric Pillars
-          Row(
-            children: [
-              Expanded(child: _buildMetricPillar('BLENDED LIFETIME', '14.8', 'km/L', '+4.2% factory', AppColors.emerald)),
-              const SizedBox(width: 8),
-              Expanded(child: _buildMetricPillar('COST / KM', '₹ 6.54', '/ km', 'At ₹94.20/L', AppColors.secondary)),
-              const SizedBox(width: 8),
-              Expanded(child: _buildMetricPillar('HIGHWAY CRUISE', '17.2', 'km/L', 'Peak: 18.4', AppColors.primary)),
-              const SizedBox(width: 8),
-              Expanded(child: _buildMetricPillar('CITY RUSH', '12.1', 'km/L', 'Peak traffic', Colors.amber.shade800)),
-            ],
-          ),
-          const SizedBox(height: 18),
+          // 4 Metric Pillars (removed)
 
           // 5-Bar Trajectory Chart
-          const Text('RECENT REFUEL MILEAGE TRAJECTORY (LAST 5 LOGS)', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: AppColors.secondary)),
           const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.all(12),
@@ -930,35 +809,6 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
     );
   }
 
-  Widget _buildMetricPillar(String label, String value, String unit, String note, Color noteColor) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, style: const TextStyle(fontSize: 7.5, fontWeight: FontWeight.bold, color: AppColors.secondary)),
-          const SizedBox(height: 4),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Text(value, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, fontFamily: 'Outfit')),
-              const SizedBox(width: 2),
-              Text(unit, style: const TextStyle(fontSize: 8, color: AppColors.secondary)),
-            ],
-          ),
-          const SizedBox(height: 2),
-          Text(note, style: TextStyle(fontSize: 7.5, fontWeight: FontWeight.bold, color: noteColor)),
-        ],
-      ),
-    );
-  }
-
   Widget _buildBarItem(String val, String label, double fraction, bool isPeak) {
     return Column(
       children: [
@@ -976,140 +826,6 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
         ),
         const SizedBox(height: 4),
         Text(label, style: const TextStyle(fontSize: 9, color: AppColors.secondary)),
-      ],
-    );
-  }
-
-  // SECTION 4: APPROXIMATE ENGINE HEALTH INDEX
-  Widget _buildSection4EngineHealth() {
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Row(
-                children: [
-                  Icon(Icons.health_and_safety_rounded, color: AppColors.emerald, size: 20),
-                  SizedBox(width: 8),
-                  Text('Approximate Engine Health Index', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.onSurface)),
-                ],
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(color: AppColors.emerald.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
-                child: Text('High Confidence', style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: AppColors.emerald)),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-
-          // Health Score and 4 Subsystems
-          Row(
-            children: [
-              // Radial Health
-              Container(
-                width: 90,
-                height: 90,
-                decoration: BoxDecoration(
-                  color: AppColors.emerald.withValues(alpha: 0.08),
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.emerald.withValues(alpha: 0.3), width: 3),
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('96%', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.emerald, fontFamily: 'Outfit')),
-                      Text('Prime', style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: AppColors.emerald)),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 14),
-
-              // 4 Subsystems Progress Bars
-              Expanded(
-                child: Column(
-                  children: [
-                    _buildSubsystemProgress('Oil Viscosity', '92%', 0.92, Colors.amber.shade700),
-                    const SizedBox(height: 6),
-                    _buildSubsystemProgress('Combustion Stability', '98%', 0.98, AppColors.emerald),
-                    const SizedBox(height: 6),
-                    _buildSubsystemProgress('Injector Flow', '95%', 0.95, AppColors.primary),
-                    const SizedBox(height: 6),
-                    _buildSubsystemProgress('Thermal Index', '97%', 0.97, Colors.teal),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-
-          // Diagnostic Recommendation Banner
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.06),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Mechanical Integrity Verified', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.onSurface)),
-                      Text('Logging regularly prevents catastrophic faults.', style: TextStyle(fontSize: 9, color: AppColors.secondary)),
-                    ],
-                  ),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ServiceScreen(initialVehicle: _vehicle)));
-                  },
-                  icon: const Icon(Icons.calendar_month_rounded, size: 14),
-                  label: const Text('Book Bay', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSubsystemProgress(String label, String percent, double frac, Color color) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(label, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: AppColors.secondary)),
-            Text(percent, style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: color, fontFamily: 'monospace')),
-          ],
-        ),
-        const SizedBox(height: 2),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(4),
-          child: LinearProgressIndicator(value: frac, backgroundColor: Colors.grey.shade200, color: color, minHeight: 5),
-        ),
       ],
     );
   }
@@ -1132,8 +848,7 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
               const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Verified Driver Log Ledger', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.onSurface)),
-                  Text('Chronological audit trail of refuels and odometer checkpoints', style: TextStyle(fontSize: 10, color: AppColors.secondary)),
+                  Text('Verified Driver Log Ledger', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.onSurface))
                 ],
               ),
               OutlinedButton.icon(
@@ -1143,7 +858,7 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
                       backgroundColor: AppColors.primary,
                       behavior: SnackBarBehavior.floating,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      content: const Text('Exported telemetry audit log to motoro_fuel_odo_ledger.csv'),
+                      content: const Text('Exported motoro_fuel_odo_ledger.csv'),
                     ),
                   );
                 },
@@ -1194,7 +909,7 @@ class _FuelOdoScreenState extends State<FuelOdoScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(item['type'] as String, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.onSurface)),
-                  Text('${item['station']} • ${item['date']}', style: const TextStyle(fontSize: 9, color: AppColors.secondary)),
+                  Text('• ${item['date']}', style: const TextStyle(fontSize: 9, color: AppColors.secondary)),
                 ],
               ),
             ],

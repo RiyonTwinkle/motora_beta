@@ -315,6 +315,73 @@ def get_vehicle_telemetry(vin: str):
         "last_sync": int(time.time())
     }
 
+@app.get("/api/v1/vehicles/{vin}/ecu-telemetry")
+def get_vehicle_ecu_telemetry(vin: str):
+    if vin in FLEET_DATABASE:
+        car = FLEET_DATABASE[vin]
+        car_name = car["name"]
+        fuel_type = car.get("fuel_type", "Diesel")
+        engine_type = f"{fuel_type} High-Pressure Common Rail Direct Injection"
+    else:
+        car_name = f"Vehicle {vin}"
+        fuel_type = "Diesel mHawk 2.2L"
+        engine_type = "2.2L mHawk Turbocharged Diesel"
+
+    is_thar = "THAR" in vin
+    return {
+        "status": "success",
+        "vin": vin,
+        "vehicle_name": car_name,
+        "engine_type": engine_type,
+        "is_engine_running": True,
+        "ecu_status": "Online • Bosch EDC17 CAN-Bus Protocol (500 kbps)",
+        "rpm": 1950 if is_thar else 2340,
+        "max_rpm": 5500 if "diesel" in fuel_type.lower() else 6800,
+        "speed_kmh": 64.0 if is_thar else 82.5,
+        "engine_load_percent": 48.0 if is_thar else 41.2,
+        "throttle_percent": 38.0 if is_thar else 32.5,
+        "boost_pressure_bar": 1.45 if is_thar else 1.32,
+        "maf_airflow": 52.4 if is_thar else 46.8,
+        "map_pressure_kpa": 162.0 if is_thar else 148.0,
+        "coolant_temp_c": 90.5,
+        "oil_temp_c": 94.8,
+        "oil_pressure_bar": 4.3,
+        "intake_air_temp_c": 27.5,
+        "transmission_temp_c": 82.0,
+        "exhaust_gas_temp_c": 495.0,
+        "fuel_rail_pressure_bar": 1420.0 if is_thar else 1380.0,
+        "air_fuel_ratio": 14.7,
+        "lambda": 1.00,
+        "short_term_fuel_trim": 0.8,
+        "long_term_fuel_trim": -0.4,
+        "instant_fuel_economy": 13.4 if is_thar else 16.2,
+        "fuel_level_percent": 62.0 if is_thar else 78.0,
+        "fuel_remaining_litres": 35.3 if is_thar else 46.8,
+        "ignition_timing_deg": 14.2,
+        "cylinder_misfires": {"Cyl 1": 0, "Cyl 2": 0, "Cyl 3": 0, "Cyl 4": 0},
+        "vvt_intake_deg": 11.5,
+        "vvt_exhaust_deg": 7.8,
+        "battery_voltage": 13.85,
+        "alternator_current": 48.0,
+        "o2_sensor1_voltage": 0.84,
+        "o2_sensor2_voltage": 0.46,
+        "egr_valve_percent": 16.5,
+        "catalytic_efficiency_percent": 99.1,
+        "dpf_soot_level_percent": 18.0 if is_thar else 9.5,
+        "check_engine_light_on": False,
+        "active_dtc_count": 0,
+        "dtc_codes": [
+            {
+                "code": "P0000",
+                "system": "Engine Powertrain Control (ECU)",
+                "description": "No diagnostic trouble codes logged. All IC engine sensors operating within optimal specifications.",
+                "severity": "pass",
+                "timestamp": "Live Active"
+            }
+        ],
+        "last_sync": int(time.time())
+    }
+
 @app.get("/api/v1/vehicles/{vin}/location")
 def get_vehicle_location(vin: str):
     if vin not in FLEET_DATABASE:

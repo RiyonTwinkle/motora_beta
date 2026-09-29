@@ -5,7 +5,6 @@ import '../theme/app_theme.dart';
 import '../widgets/floating_top_nav_bar.dart';
 import '../widgets/master_top_app_bar.dart';
 import '../widgets/enroll_vehicle_modal.dart';
-import 'home_screen.dart';
 import 'service_screen.dart';
 import 'fasttag_screen.dart';
 
@@ -394,7 +393,7 @@ class _GarageScreenState extends State<GarageScreen> {
                           onPressed: () {
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (_) => HomeScreen(initialVin: car.vin)),
+                              MaterialPageRoute(builder: (_) => GarageScreen(initialVehicle: car)),
                             );
                           },
                           icon: const Icon(Icons.analytics_rounded, size: 16),
